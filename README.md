@@ -6,7 +6,9 @@ Manage the GitHub account that is already signed in on your PC — from inside D
 [![Release](https://img.shields.io/github/v/release/zayyehtut/dsh-github-panel)](https://github.com/zayyehtut/dsh-github-panel/releases)
 [![Tested on dsh](https://img.shields.io/badge/dsh-0.2.1--rc.5-4D6BFE)](https://github.com/deepseek-ai/deepseek-harness)
 
-![The GitHub panel](assets/screenshot-dashboard.png)
+![Illustrated preview of the GitHub panel](assets/preview.png)
+
+<sub>*Illustrated preview with example data — not a live account.*</sub>
 
 ## What you get
 
@@ -16,8 +18,6 @@ Manage the GitHub account that is already signed in on your PC — from inside D
 - **A searchable repository list** — edit a description or topics inline, archive or unarchive, rename, or open a repository on GitHub.
 - **Profile & pins** — what the GitHub API can and cannot change, with links to the right GitHub settings pages.
 - **A health report** — README, license, `.gitignore`, CI, tests and possible-secret checks per repository, with safe fixes you can apply in one click.
-
-![Where the panel lives](assets/screenshot-rail.png)
 
 ## Install
 
@@ -131,9 +131,12 @@ index.js          Host half — loopback HTTP routes, runs gh, never touches the
 client.js         Client half — the rail icon and the panel UI
 cordis.patch.yml  The DSH bundle patch that inserts the plugin row
 locale/           Display metadata (English, Chinese)
-assets/           Screenshots used by this README and marketplace cards
-screenshots.json  Declares the marketplace screenshots
+assets/           The icon and the generated preview illustration
+screenshots.json  Declares the preview for marketplace cards
+tools/            Generator for the illustrated preview
 ```
+
+The preview image is generated, not captured: `python tools/make-preview.py` redraws it from code (requires Pillow). It contains example data only and carries an "Illustration with example data" note.
 
 Clone the repo, link it into a DSH profile as shown under *Manual profile setup*, and reload. Changes to `client.js` need a window reload; changes to `index.js` need the plugin to be re-enabled.
 

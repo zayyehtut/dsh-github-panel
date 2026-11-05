@@ -35,7 +35,9 @@
     "locale/*.json",
     "icon.svg",
     "screenshots.json",
-    "assets/screenshot-*.png"
+    "tools/make-preview.py",
+    "assets/icon-180.png",
+    "assets/preview.png"
   ],
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
