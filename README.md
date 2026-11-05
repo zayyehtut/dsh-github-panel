@@ -140,7 +140,12 @@ The preview image is generated, not captured: `python tools/make-preview.py` red
 
 Clone the repo, link it into a DSH profile as shown under *Manual profile setup*, and reload. Changes to `client.js` need a window reload; changes to `index.js` need the plugin to be re-enabled.
 
-Issues and pull requests are welcome.
+## Maintenance
+
+Shared as-is. This project is not actively maintained: issues are not triaged and no response time is promised.
+
+If something breaks or you need a change, point your AI agent at this repository and have it diagnose and
+patch your own copy or fork. Upstream pull requests may sit unreviewed.
 
 ## License
 
