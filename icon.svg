@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="GitHub panel">
+  <circle cx="6.5" cy="5.5" r="2.4" />
+  <circle cx="6.5" cy="18.5" r="2.4" />
+  <circle cx="17.5" cy="8.5" r="2.4" />
+  <path d="M6.5 8v8" />
+  <path d="M17.5 11v1.4a4 4 0 0 1-4 4H9.2" />
+</svg>
