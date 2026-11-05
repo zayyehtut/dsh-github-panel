@@ -11,7 +11,7 @@
  * keyring. This module never sees the GitHub token.
  */
 window.__ModuleLoader__.load({
-  id: '@local/dsh-github-panel',
+  id: 'dsh-github-panel',
   factory(require) {
     const React = require('react')
     const h = React.createElement
