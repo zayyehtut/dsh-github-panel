@@ -1,3 +1,3 @@
 - insert:
     - id: github-panel-ui
-      name: '@local/dsh-github-panel'
+      name: 'dsh-github-panel'

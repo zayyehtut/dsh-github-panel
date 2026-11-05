@@ -1,87 +1,143 @@
-# dsh-github-panel
+# GitHub panel for DeepSeek Harness
 
-A GitHub management panel for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web UI. It manages the GitHub account that is already signed in on your PC through the GitHub CLI — the panel never asks for, displays or stores a token.
+Manage the GitHub account that is already signed in on your PC — from inside DeepSeek Harness. The panel runs the GitHub CLI (`gh`) for you and shows the result on one page. **No token to paste, no API key, no extra sign-in.**
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/zayyehtut/dsh-github-panel)](https://github.com/zayyehtut/dsh-github-panel/releases)
+[![Tested on dsh](https://img.shields.io/badge/dsh-0.2.1--rc.5-4D6BFE)](https://github.com/deepseek-ai/deepseek-harness)
+
+![The GitHub panel](assets/screenshot-dashboard.png)
 
 ## What you get
 
-- **Connection card** — connected as `@login` via the GitHub CLI, token scopes, with **Re-check** and **Disconnect**.
-- **Repository dashboard** — total / owned / public / private / archived counts, description and topic coverage.
-- **Needs attention checklist** — missing descriptions or topics, empty repositories, unused forks, profile README, profile bio, pins and duplicate gists.
-- **Repository list** — searchable and filterable, with inline **Edit details** (description + topics), **Archive / Unarchive**, **Rename** and **Open on GitHub**.
-- **Profile & pins** — profile README status, pin count and suggestions, plus links for the two things the GitHub API cannot change from code (pins and profile name/bio).
-- **Recent actions** — an in-memory log of what the panel changed in this session.
-- **Deep analysis** — a read-only health report per repository (README quality, license, `.gitignore`, CI, tests, possible secrets) with safe fixes you can apply: MIT license, `.gitignore`, README status section.
+- **Your connection, at a glance** — connected as `@you`, via the GitHub CLI, with the token scopes GitHub reports.
+- **Your repositories, counted** — total, public, private, archived, descriptions and topics coverage.
+- **A "needs attention" list** — missing descriptions or topics, empty repositories, forks you no longer use, profile README, empty bio, unused pins, duplicate gists.
+- **A searchable repository list** — edit a description or topics inline, archive or unarchive, rename, or open a repository on GitHub.
+- **Profile & pins** — what the GitHub API can and cannot change, with links to the right GitHub settings pages.
+- **A health report** — README, license, `.gitignore`, CI, tests and possible-secret checks per repository, with safe fixes you can apply in one click.
 
-## Requirements
-
-- The DeepSeek Harness app with its Web UI (the panel is a Harness profile bundle).
-- The **GitHub CLI** (`gh`) installed and signed in (`gh auth login`). The panel calls `gh`; it never reads the token itself.
-- Tested on Windows 10/11. Other platforms use `gh` from `PATH` and are untested.
+![Where the panel lives](assets/screenshot-rail.png)
 
 ## Install
 
-The panel ships as a DeepSeek Harness profile bundle.
+### Option 1 — DeepSeek Harness app (easiest)
 
-1. Clone this repository anywhere on the machine:
+1. Open **Plugins** in the left sidebar.
+2. Click **Add plugin**, paste this into the package field:
 
-   ```powershell
+   ```
+   github:zayyehtut/dsh-github-panel
+   ```
+
+3. Click **Install**, then click **Enable now**.
+4. Reload the window if the **GitHub** icon does not appear immediately.
+
+### Option 2 — `dsh web` (command line)
+
+```sh
+dsh plugin --profile web add github:zayyehtut/dsh-github-panel
+```
+
+Restart `dsh web` afterwards. Replace `web` with your profile name if you use a custom one.
+
+> Using the DeepSeek Harness desktop app? Use Option 1. The desktop app manages its own profile, so a CLI install into `profiles/web` will not show up there.
+
+### Option 3 — dsh-market
+
+The plugin is submitted to the community **dsh-market** catalog. Once it appears there, you can search for **GitHub panel** and install it with one click.
+
+<details>
+<summary><b>Manual profile setup (for development)</b></summary>
+
+1. Clone the repository anywhere on the machine:
+
+   ```sh
    git clone https://github.com/zayyehtut/dsh-github-panel.git
    ```
 
-2. Add it to your DSH profile's `package.json` (for the desktop app: `%USERPROFILE%\.dsh\profiles\<profile>\package.json`) as a linked dependency and a bundle:
+2. In your DSH profile's `package.json`, add the package as a linked dependency and to the bundle list:
 
    ```json
    {
      "dependencies": {
-       "@local/dsh-github-panel": "link:C:/path/to/dsh-github-panel"
+       "dsh-github-panel": "link:/absolute/path/to/dsh-github-panel"
      },
      "dsh": {
        "profile": {
          "bundles": [
            "@deepseek-ai/dsh-base",
            "@deepseek-ai/dsh-web-app",
-           "@local/dsh-github-panel"
+           "dsh-github-panel"
          ]
        }
      }
    }
    ```
 
-3. Let the profile install its dependencies (the Harness plugin manager does this for you, or run `pnpm install` in the profile folder).
+3. Let the profile install its dependencies (`pnpm install` in the profile folder, or let the Harness plugin manager do it).
+4. Reload the Harness window.
 
-4. Reload the Harness window (or restart the app). A **GitHub** icon appears in the left rail; the panel opens in the main column.
+</details>
 
-No token, API key or environment variable is required.
+## Before you start
 
-## Configuration
+| Requirement | Check |
+|---|---|
+| DeepSeek Harness **0.2.1 or newer** (tested on `0.2.1-rc.5`) | `dsh --version` or the About dialog |
+| GitHub CLI installed | `gh --version` — install from [cli.github.com](https://cli.github.com/) |
+| Signed in to GitHub through the CLI | `gh auth status` |
 
-The panel finds `gh` in the standard install locations or on `PATH`, and uses whatever login `gh` already has.
+If `gh` is not installed or not signed in, the panel tells you what to do instead of failing silently.
 
-- **`DSH_GITHUB_CONFIG_DIR`** — optional. If your `gh` configuration lives somewhere non-standard (for example, a sandboxed workspace that cannot write `%APPDATA%`), point this at that directory before starting the Harness. Otherwise the panel falls back to `gh`'s own default.
+## First run
 
-## Safety model
+1. Click the **GitHub** icon in the left rail (next to *Plugins* and *Automation tasks*).
+2. The panel shows **Connected as @you** and your repository counts.
+3. If it says the account is not connected: run `gh auth login` in a terminal, then press **Re-check**.
+4. Use the filters above the repository list to narrow down what you want to fix, and the **Needs attention** list to start.
 
-- Every HTTP route is **loopback-only** (`127.0.0.1`).
-- Every mutation additionally requires the `x-dsh-github-panel: 1` header, so a random web page cannot trigger a change.
-- Mutations re-read the repository from GitHub first and require admin rights; descriptions and topics are validated again on the host side.
-- The code never reads the token — only the GitHub CLI does.
-- The panel writes nothing to disk; the action log is in memory and clears on restart.
-- This build deliberately registers **no agent tools at activation**; the panel is a UI, not an automation surface.
+## Safety and privacy
 
-## Limits
-
-- Pinned repositories and profile name/bio have no GitHub write API — the panel links to the right GitHub page and re-reads the result on refresh.
-- Repository deletion is not offered (it needs the `delete_repo` scope). Archiving is available.
-- The panel does not run git operations (commits, pushes, releases); it manages account and repository metadata only.
+- The panel is served by your own Harness process on `127.0.0.1` only.
+- Every change re-reads the repository from GitHub first and needs admin rights on it; descriptions and topics are validated again before writing.
+- The panel **never reads the token**. It only launches `gh`, which holds the login in your OS keyring.
+- Nothing is written to disk by the panel; the action log is in memory and disappears when the Harness restarts.
+- Repository deletion is not offered. Pins and profile name/bio are linked out to GitHub because the API has no write access for them.
 
 ## Troubleshooting
 
 | Symptom | Fix |
 |---|---|
-| "GitHub is not connected on this PC" | Run `gh auth login`, confirm with `gh auth status`, then press **Re-check**. |
-| Panel icon is missing | Check that the bundle is in the profile's `dsh.profile.bundles` list, reinstall the profile dependencies, then reload the window. |
-| Wrong account shown | `gh auth switch` (or `gh auth login`) for the right account, then **Re-check**. |
-| `gh` not found in a sandboxed host | Set `DSH_GITHUB_CONFIG_DIR` for the config directory; make sure `gh` is installed for the user that runs the Harness. |
+| The **GitHub** icon is missing | Confirm the bundle is enabled on the Plugins page, reload the window, and check that your DSH is 0.2.1 or newer. |
+| "Not connected on this PC" | Run `gh auth login`, confirm with `gh auth status`, then press **Re-check**. |
+| The panel shows the wrong account | Run `gh auth switch` (or `gh auth login` for the right account), then press **Re-check**. |
+| "Loading your GitHub account..." never finishes | Check the network (GitHub API reachability) and that `gh api user` works in a terminal. |
+| `gh` is not found in a sandboxed host | Set `DSH_GITHUB_CONFIG_DIR` to the directory holding the `gh` config, or make sure `gh` on `PATH` belongs to the user running the Harness. |
+| A change fails with "permission" | The token needs the `repo` scope and you need admin rights on that repository. |
+
+## Compatibility
+
+- **DeepSeek Harness:** 0.2.1 or newer; developed and tested against `0.2.1-rc.5`.
+- **Platforms:** Windows 10/11 tested. macOS and Linux use `gh` from `PATH` and are untested.
+- **GitHub CLI:** 2.x; tested with 2.95.0.
+
+## Development
+
+There is no build step: the bundle is plain ESM JavaScript.
+
+```
+index.js          Host half — loopback HTTP routes, runs gh, never touches the token
+client.js         Client half — the rail icon and the panel UI
+cordis.patch.yml  The DSH bundle patch that inserts the plugin row
+locale/           Display metadata (English, Chinese)
+assets/           Screenshots used by this README and marketplace cards
+screenshots.json  Declares the marketplace screenshots
+```
+
+Clone the repo, link it into a DSH profile as shown under *Manual profile setup*, and reload. Changes to `client.js` need a window reload; changes to `index.js` need the plugin to be re-enabled.
+
+Issues and pull requests are welcome.
 
 ## License
 
